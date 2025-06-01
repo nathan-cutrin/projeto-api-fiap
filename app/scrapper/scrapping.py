@@ -115,7 +115,7 @@ def extract_importacao_data(response):
             valor = cols[2].get_text(strip=True)
             result.append({
                 "pais": pais,
-                "quantidade": quantidade,
+                "quantidade_kg": quantidade,
                 "valor_dolar": valor,
             })
     return result
