@@ -13,10 +13,10 @@ from app.schemas.invocation_parameters_schema import (
 )
 from app.schemas.responses_schema import (
     ComercializacaoResponseSchema,
+    ExportacaoResponseSchema,
+    ImportacaoExportacaoSchema,
     ProcessamentoResponseSchema,
     ProducaoResponseSchema,
-    ImportacaoExportacaoSchema,
-    ExportacaoResponseSchema,
 )
 from app.scrapper.scrapping import (
     extract_comercializacao_data,

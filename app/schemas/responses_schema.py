@@ -38,12 +38,12 @@ class ImportacaoExportacaoSchema(BaseModel):
 
 
 class ImportacaoExportacaoSchema(BaseModel):
-    data: list[ProcessamentoSchema] = Field(
+    data: list[ImportacaoExportacaoSchema] = Field(
         ..., description="Lista de dados de importação"
     )
 
 
-class ImportacaoExportacaoSchema(BaseModel):
-    data: list[ProcessamentoSchema] = Field(
+class ExportacaoExportacaoSchema(BaseModel):
+    data: list[ImportacaoExportacaoSchema] = Field(
         ..., description="Lista de dados de exportacao"
     )
