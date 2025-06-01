@@ -92,9 +92,12 @@ def extract_comercializacao_data(response):
             result.append({
                 "tipo_produto": tipo_produto,
                 "produto": text_0.lower(),
-                "quantidade_litros": int(text_1.replace(".", "").replace("-", "0"))
+                "quantidade_litros": (
+                    int(text_1.replace(".", "").replace("-", "0"))
+                ),
             })
     return result
+
 
 def extract_importacao_data(response):
     soup = BeautifulSoup(response.text, "html.parser")

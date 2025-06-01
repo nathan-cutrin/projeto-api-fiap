@@ -24,6 +24,7 @@ class ProcessamentoResponseSchema(BaseModel):
         ..., description="Lista de dados de processamento"
     )
 
+
 class ComercializacaoResponseSchema(BaseModel):
     data: list[ProdutoSchema] = Field(
         ..., description="Lista de dados de processamento"

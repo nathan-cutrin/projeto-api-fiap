@@ -12,9 +12,9 @@ from app.schemas.invocation_parameters_schema import (
     ProducaoPathParams,
 )
 from app.schemas.responses_schema import (
-    ProducaoResponseSchema,
     ComercializacaoResponseSchema,
     ProcessamentoResponseSchema,
+    ProducaoResponseSchema,
 )
 from app.scrapper.scrapping import (
     extract_comercializacao_data,
