@@ -33,8 +33,8 @@ class ComercializacaoResponseSchema(BaseModel):
 
 class ImportacaoExportacaoSchema(BaseModel):
     pais: str = Field(..., description="País")
-    quantidade_kg: str = Field(..., description="Quantidade em kg")
-    valor_dolar: str = Field(..., description="Valor em US$")
+    quantidade_kg: int = Field(..., description="Quantidade em kg")
+    valor_dolar: int = Field(..., description="Valor em US$")
 
 
 class ImportacaoResponseSchema(BaseModel):

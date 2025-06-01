@@ -20,8 +20,7 @@ from app.schemas.responses_schema import (
 )
 from app.scrapper.scrapping import (
     extract_comercializacao_data,
-    extract_exportacao_data,
-    extract_importacao_data,
+    extract_import_export_data,
     extract_processamento_data,
     extract_producao_data,
 )
@@ -195,7 +194,7 @@ async def get_importacao_(params: ImportacaoPathParams = Path(...)):
         option="importacao",
         suboption=params.sub_aba,
         year=params.ano,
-        extract_func=extract_importacao_data,
+        extract_func=extract_import_export_data,
     )
 
 
@@ -225,5 +224,5 @@ async def get_exportacao(params: ExportacaoPathParams = Path(...)):
         option="exportacao",
         suboption=params.sub_aba,
         year=params.ano,
-        extract_func=extract_exportacao_data,
+        extract_func=extract_import_export_data,
     )

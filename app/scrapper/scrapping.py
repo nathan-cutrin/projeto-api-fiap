@@ -99,7 +99,7 @@ def extract_comercializacao_data(response):
     return result
 
 
-def extract_importacao_data(response):
+def extract_import_export_data(response):
     soup = BeautifulSoup(response.text, "html.parser")
     table = soup.find("table", class_="tb_base tb_dados")
     if not table or not table.tbody:
@@ -111,27 +111,11 @@ def extract_importacao_data(response):
         cols = row.find_all("td")
         if len(cols) == n_cols:
             pais = cols[0].get_text(strip=True)
-            quantidade = cols[1].get_text(strip=True)
-            valor = cols[2].get_text(strip=True)
+            quantidade = cols[1].get_text(strip=True).replace(".", "").replace("-", "0")
+            valor = cols[2].get_text(strip=True).replace(".", "").replace("-", "0")
             result.append({
                 "pais": pais,
-                "quantidade_kg": quantidade,
-                "valor_dolar": valor,
+                "quantidade_kg": int(quantidade) if quantidade.isdigit() else 0,
+                "valor_dolar": int(valor) if valor.isdigit() else 0,
             })
     return result
-
-
-def extract_exportacao_data(response):
-    soup = BeautifulSoup(response.text, "html.parser")
-    table = soup.find("table", class_="tb_dados")
-    if not table or not table.thead or not table.tbody:
-        return []
-
-    headers = [th.get_text(strip=True) for th in table.thead.find_all("th")]
-    rows = []
-    for tr in table.tbody.find_all("tr"):
-        cells = [td.get_text(strip=True) for td in tr.find_all("td")]
-        if len(cells) == len(headers):
-            row = dict(zip(headers, cells))
-            rows.append(row)
-    return rows
