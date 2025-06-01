@@ -15,6 +15,8 @@ from app.schemas.responses_schema import (
     ComercializacaoResponseSchema,
     ProcessamentoResponseSchema,
     ProducaoResponseSchema,
+    ImportacaoExportacaoSchema,
+    ExportacaoResponseSchema,
 )
 from app.scrapper.scrapping import (
     extract_comercializacao_data,
@@ -170,6 +172,7 @@ async def get_comercializacao(params: ComercializacaoPathParams = Path(...)):
 @app.get(
     "/importacao/{sub_aba}/{ano}",
     status_code=HTTPStatus.OK,
+    response_model=ImportacaoExportacaoSchema,
     description=(
         "Obtém dados de importação da vitivinicultura para a subopção e ano "
         "informados. Retorna informações sobre importação de uvas, vinhos e "
@@ -199,6 +202,7 @@ async def get_importacao_(params: ImportacaoPathParams = Path(...)):
 @app.get(
     "/exportacao/{sub_aba}/{ano}",
     status_code=HTTPStatus.OK,
+    response_model=ExportacaoResponseSchema,
     description=(
         "Obtém dados de exportação da vitivinicultura para a subopção e ano "
         "informados. Retorna informações sobre exportação de uvas, vinhos e "
