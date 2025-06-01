@@ -1,5 +1,5 @@
-
 from pydantic import BaseModel, Field
+
 
 class ProducaoSchema(BaseModel):
     tipo_produto: str = Field(..., description="Tipo da uva")
@@ -12,6 +12,7 @@ class ProducaoResponseSchema(BaseModel):
         ..., description="Lista de dados de processamento"
     )
 
+
 class ProcessamentoSchema(BaseModel):
     tipo_uva: str = Field(..., description="Tipo da uva")
     cultivo: str = Field(..., description="Uva cultivada")
@@ -22,4 +23,3 @@ class ProcessamentoResponseSchema(BaseModel):
     data: list[ProcessamentoSchema] = Field(
         ..., description="Lista de dados de processamento"
     )
-
