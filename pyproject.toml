@@ -12,6 +12,9 @@ dependencies = [
     "pandas==2.2.3",
 ]
 
+[tool.poetry]
+version = "1.0" 
+
 [project.optional-dependencies]
 dev = [
     "pytest",
@@ -42,3 +45,4 @@ run = 'fastapi dev app/app.py'
 pre_test = 'task lint'
 test = 'pytest -s -x --cov=app -vv'
 post_test = 'coverage html'
+install = 'poetry install'
