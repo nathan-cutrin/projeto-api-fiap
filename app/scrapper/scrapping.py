@@ -41,7 +41,7 @@ def extract_producao_data(response):
         return None
 
     return _parse_table(
-        response, "tb_base tb_dados", 2, row_parser, skip_header=True
+        response, "tb_base tb_dados", 2, row_parser, skip_header=False
     )
 
 
