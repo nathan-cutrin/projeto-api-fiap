@@ -1,24 +1,28 @@
 from enum import Enum
 
-from fastapi import Query
+from pydantic import BaseModel, Field
 
-ANO_MIN = 1970
-ANO_MAX = 2023
-ANO_MAX_IMP_EXP = 2024
-
-ano_query = Query(
-    default=2023,
-    ge=ANO_MIN,
-    le=ANO_MAX,
-    description=f"Ano entre {ANO_MIN} e {ANO_MAX}",
+ano_field_until_2023 = Field(
+    2023,
+    ge=1970,
+    le=2023,
+    description="Dados disponíveis entre os anos 1970 e 2023",
 )
 
-ano_query_imp_exp = Query(
-    default=2024,
-    ge=ANO_MIN,
-    le=ANO_MAX_IMP_EXP,
-    description=f"Ano entre {ANO_MIN} e {ANO_MAX_IMP_EXP}",
+ano_field_until_2024 = Field(
+    2024,
+    ge=1970,
+    le=2024,
+    description="Dados disponíveis entre os anos 1970 e 2024",
 )
+
+
+class ProducaoPathParams(BaseModel):
+    ano: int = ano_field_until_2023
+
+
+class ComercializacaoPathParams(BaseModel):
+    ano: int = ano_field_until_2023
 
 
 class SubAbaProcessamentoSchema(str, Enum):
@@ -26,6 +30,13 @@ class SubAbaProcessamentoSchema(str, Enum):
     VINHO = "americanas_hibridas"
     UVA_MESA = "uvas_de_mesa"
     PASSAS = "sem_classificacao"
+
+
+class ProcessamentoPathParams(BaseModel):
+    sub_aba: SubAbaProcessamentoSchema = Field(
+        ..., description="Sub-abas de processamento"
+    )
+    ano: int = ano_field_until_2023
 
 
 class SubAbaImportacaoSchema(str, Enum):
@@ -36,8 +47,31 @@ class SubAbaImportacaoSchema(str, Enum):
     SUCO_DE_UVA = "suco_de_uva"
 
 
+class ImportacaoPathParams(BaseModel):
+    sub_aba: SubAbaImportacaoSchema = Field(
+        ..., description="Sub-abas de importação"
+    )
+    ano: int = ano_field_until_2024
+
+
 class SubAbaExportacaoSchema(str, Enum):
     VINHOS_DE_MESA = "vinhos_de_mesa"
     ESPUMANTES = "espumantes"
     UVAS_FRESCAS = "uvas_frescas"
     SUCO_DE_UVA = "suco_de_uva"
+
+
+class ExportacaoPathParams(BaseModel):
+    sub_aba: SubAbaExportacaoSchema = Field(
+        ..., description="Sub-abas de exportação"
+    )
+    ano: int = ano_field_until_2024
+
+
+class ProdutoQuantidadeSchema(BaseModel):
+    Produto: str
+    Quantidade: str
+
+
+class ProducaoResponseSchema(BaseModel):
+    data: list[ProdutoQuantidadeSchema]
