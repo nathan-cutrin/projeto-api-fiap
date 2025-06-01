@@ -3,16 +3,19 @@ from enum import Enum
 from pydantic import BaseModel, Field
 
 ano_field_until_2023 = Field(
-    2023,
+    ...,
     ge=1970,
     le=2023,
+    default=2023,
     description="Dados disponíveis entre os anos 1970 e 2023",
+
 )
 
 ano_field_until_2024 = Field(
-    2024,
+    ...,
     ge=1970,
     le=2024,
+    default=2023,
     description="Dados disponíveis entre os anos 1970 e 2024",
 )
 
