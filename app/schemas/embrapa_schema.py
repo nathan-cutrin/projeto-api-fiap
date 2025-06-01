@@ -68,10 +68,13 @@ class ExportacaoPathParams(BaseModel):
     ano: int = ano_field_until_2024
 
 
-class ProdutoQuantidadeSchema(BaseModel):
-    Produto: str
-    Quantidade: str
+class ProcessamentoSchema(BaseModel):
+    tipo: str = Field(..., description="Tipo da uva")
+    cultivo: str = Field(..., description="Uva cultivada")
+    quantidade_kg: str = Field(..., description="Quantidade em kg")
 
 
-class ProducaoResponseSchema(BaseModel):
-    data: list[ProdutoQuantidadeSchema]
+class ProcessamentoResponseSchema(BaseModel):
+    data: list[ProcessamentoSchema] = Field(
+        ..., description="Lista de dados de processamento"
+    )
