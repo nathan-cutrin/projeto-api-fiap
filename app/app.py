@@ -172,7 +172,7 @@ async def get_comercializacao(params: ComercializacaoPathParams = Path(...)):
 @app.get(
     "/importacao/{sub_aba}/{ano}",
     status_code=HTTPStatus.OK,
-    response_model=ImportacaoReponseSchema,
+    response_model=ImportacaoResponseSchema,
     description=(
         "Obtém dados de importação da vitivinicultura para a subopção e ano "
         "informados. Retorna informações sobre importação de uvas, vinhos e "
