@@ -16,7 +16,7 @@ class ProducaoResponseSchema(BaseModel):
 class ProcessamentoSchema(BaseModel):
     tipo_uva: str = Field(..., description="Tipo da uva")
     cultivo: str = Field(..., description="Uva cultivada")
-    quantidade_kg: str = Field(..., description="Quantidade em kg")
+    quantidade_kg: int = Field(..., description="Quantidade em kg")
 
 
 class ProcessamentoResponseSchema(BaseModel):

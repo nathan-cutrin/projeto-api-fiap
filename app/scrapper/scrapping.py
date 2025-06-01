@@ -54,7 +54,7 @@ def extract_processamento_data(response):
             return {
                 "tipo_uva": current_group["value"],
                 "cultivo": cultivar,
-                "quantidade_kg": quantidade
+                "quantidade_kg": int(quantidade.replace(".", "").replace("-", "0"))
             }
         return None
     return _parse_table(response, "tb_base tb_dados", 2, row_parser)
