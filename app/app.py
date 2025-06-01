@@ -12,6 +12,8 @@ from app.schemas.invocation_parameters_schema import (
     ProducaoPathParams,
 )
 from app.schemas.responses_schema import (
+    ProducaoResponseSchema,
+    ComercializacaoResponseSchema,
     ProcessamentoResponseSchema,
 )
 from app.scrapper.scrapping import (
@@ -77,6 +79,7 @@ def read_root():
 @app.get(
     "/producao/",
     status_code=HTTPStatus.OK,
+    response_model=ProducaoResponseSchema,
     description=(
         "Obtém dados de produção da vitivinicultura, permitindo filtragem "
         "por subopção e ano."
@@ -107,12 +110,12 @@ async def get_producao(params: ProducaoPathParams = Path(...)):
 @app.get(
     "/processamento/{sub_aba}/{ano}",
     status_code=HTTPStatus.OK,
+    response_model=ProcessamentoResponseSchema,
     description=(
         "Obtém dados de processamento da vitivinicultura para a subopção e "
         "ano informados. Retorna informações sobre o processamento de uvas e "
         "derivados."
     ),
-    response_model=ProcessamentoResponseSchema,
 )
 async def get_processamento(params: ProcessamentoPathParams = Path(...)):
     """
@@ -137,6 +140,7 @@ async def get_processamento(params: ProcessamentoPathParams = Path(...)):
 @app.get(
     "/comercializacao",
     status_code=HTTPStatus.OK,
+    response_model=ComercializacaoResponseSchema,
     description=(
         "Obtém dados de comercialização da vitivinicultura, permitindo "
         "filtragem por subopção e ano. Retorna informações sobre vendas, "
