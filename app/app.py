@@ -9,8 +9,8 @@ from app.schemas.embrapa_schema import (
     ExportacaoPathParams,
     ImportacaoPathParams,
     ProcessamentoPathParams,
+    ProcessamentoResponseSchema,
     ProducaoPathParams,
-    ProducaoResponseSchema,
 )
 from app.scrapper.scrapping import (
     extract_comercializacao_data,
@@ -75,7 +75,6 @@ def read_root():
 @app.get(
     "/producao/",
     status_code=HTTPStatus.OK,
-    response_model=ProducaoResponseSchema,
     description=(
         "Obtém dados de produção da vitivinicultura, permitindo filtragem "
         "por subopção e ano."
@@ -111,6 +110,7 @@ async def get_producao(params: ProducaoPathParams = Path(...)):
         "ano informados. Retorna informações sobre o processamento de uvas e "
         "derivados."
     ),
+    response_model=ProcessamentoResponseSchema,
 )
 async def get_processamento(params: ProcessamentoPathParams = Path(...)):
     """
@@ -134,6 +134,7 @@ async def get_processamento(params: ProcessamentoPathParams = Path(...)):
 
 @app.get(
     "/comercializacao",
+    status_code=HTTPStatus.OK,
     description=(
         "Obtém dados de comercialização da vitivinicultura, permitindo "
         "filtragem por subopção e ano. Retorna informações sobre vendas, "
@@ -154,7 +155,7 @@ async def get_comercializacao(params: ComercializacaoPathParams = Path(...)):
     """
     return fetch_and_extract(
         option="comercializacao",
-        suboption=params.sub_aba,
+        suboption=None,
         year=params.ano,
         extract_func=extract_comercializacao_data,
     )
@@ -162,6 +163,7 @@ async def get_comercializacao(params: ComercializacaoPathParams = Path(...)):
 
 @app.get(
     "/importacao/{sub_aba}/{ano}",
+    status_code=HTTPStatus.OK,
     description=(
         "Obtém dados de importação da vitivinicultura para a subopção e ano "
         "informados. Retorna informações sobre importação de uvas, vinhos e "
@@ -190,6 +192,7 @@ async def get_importacao_(params: ImportacaoPathParams = Path(...)):
 
 @app.get(
     "/exportacao/{sub_aba}/{ano}",
+    status_code=HTTPStatus.OK,
     description=(
         "Obtém dados de exportação da vitivinicultura para a subopção e ano "
         "informados. Retorna informações sobre exportação de uvas, vinhos e "
