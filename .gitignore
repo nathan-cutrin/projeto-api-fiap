@@ -13,6 +13,7 @@ htmlcov/
 uv-commands.txt
 .vercel
 
+.vscode
 comercializacao.html
 importacao.html
 exportacao.html 
