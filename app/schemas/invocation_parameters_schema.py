@@ -6,7 +6,6 @@ ano_field_until_2023 = Field(
     ...,
     ge=1970,
     le=2023,
-    default=2023,
     description="Dados disponíveis entre os anos 1970 e 2023",
 
 )
@@ -15,7 +14,6 @@ ano_field_until_2024 = Field(
     ...,
     ge=1970,
     le=2024,
-    default=2023,
     description="Dados disponíveis entre os anos 1970 e 2024",
 )
 
