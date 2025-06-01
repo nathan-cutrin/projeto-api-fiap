@@ -9,13 +9,32 @@ def extract_producao_data(response):
 
     rows = table.find_all("tr")
     result = []
+    tipo_produto = None
+
     n_cols = 2
     for row in rows[1:]:
         cols = row.find_all("td")
-        if len(cols) == n_cols:
-            product = cols[0].get_text(strip=True)
-            quantity = cols[1].get_text(strip=True)
-            result.append({"Produto": product, "Quantidade": quantity})
+        if len(cols) != n_cols:
+            continue
+
+        td_classes = cols[0].get("class", [])
+        text_0 = cols[0].get_text(strip=True)
+        text_1 = cols[1].get_text(strip=True)
+
+        if "tb_item" in td_classes:
+            tipo_produto = text_0
+        elif "tb_subitem" in td_classes and tipo_produto:
+            result.append({
+                "tipo_produto": tipo_produto.title(),
+                "produto": text_0.lower(),
+                "quantidade_litros": (
+                    int(
+                        text_1.replace(".", "")
+                        .replace(",", ".")
+                        .replace("-", "0")
+                    )
+                ),
+            })
     return result
 
 
