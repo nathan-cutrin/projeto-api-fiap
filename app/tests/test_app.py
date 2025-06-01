@@ -1,3 +1,4 @@
+from http import HTTPStatus
 from unittest.mock import MagicMock, patch
 
 from fastapi.testclient import TestClient
@@ -6,13 +7,10 @@ from app.app import app
 
 client = TestClient(app, raise_server_exceptions=False)
 
-HTTP_OK = 200
-HTTP_ERROR = 500
-
 
 def test_read_root():
     response = client.get("/")
-    assert response.status_code == HTTP_OK
+    assert response.status_code == HTTPStatus.OK
     assert response.json() == {
         "message": "Bem-vindo à API de Vitivinicultura da Embrapa"
     }
@@ -39,7 +37,7 @@ def test_get_producao_success(mock_requests_get, mock_url_builder):
         return_value=producao_mock,
     ):
         response = client.get("/producao/2023")
-        assert response.status_code == HTTP_OK
+        assert response.status_code == HTTPStatus.OK
         assert "data" in response.json()
         assert response.json()["data"] == producao_mock
 
@@ -70,7 +68,7 @@ def test_get_processamento_success(mock_requests_get, mock_url_builder):
         return_value=processamento_mock,
     ):
         response = client.get("/processamento/viniferas/2023")
-        assert response.status_code == HTTP_OK
+        assert response.status_code == HTTPStatus.OK
         assert "data" in response.json()
         assert response.json()["data"] == processamento_mock
 
@@ -101,7 +99,7 @@ def test_get_comercializacao_success(mock_requests_get, mock_url_builder):
         return_value=comercializacao_mock,
     ):
         response = client.get("/comercializacao/2023")
-        assert response.status_code == HTTP_OK
+        assert response.status_code == HTTPStatus.OK
         assert "data" in response.json()
         assert response.json()["data"] == comercializacao_mock
 
@@ -132,7 +130,7 @@ def test_get_importacao_success(mock_requests_get, mock_url_builder):
         return_value=importacao_mock,
     ):
         response = client.get("/importacao/espumantes/2023")
-        assert response.status_code == HTTP_OK
+        assert response.status_code == HTTPStatus.OK
         assert "data" in response.json()
         assert response.json()["data"] == importacao_mock
 
@@ -163,7 +161,7 @@ def test_get_exportacao_success(mock_requests_get, mock_url_builder):
         return_value=exportacao_mock,
     ):
         response = client.get("/exportacao/espumantes/2023")
-        assert response.status_code == HTTP_OK
+        assert response.status_code == HTTPStatus.OK
         assert "data" in response.json()
         assert response.json()["data"] == exportacao_mock
 
@@ -175,5 +173,5 @@ def test_get_exportacao_success(mock_requests_get, mock_url_builder):
 )
 def test_fetch_and_extract_error(mock_requests_get, mock_url_builder):
     response = client.get("/producao/2023")
-    assert response.status_code == HTTP_ERROR
+    assert response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
     assert "detail" in response.json()
