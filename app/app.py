@@ -11,10 +11,8 @@ from app.schemas.invocation_parameters_schema import (
     ProcessamentoPathParams,
     ProducaoPathParams,
 )
-
 from app.schemas.responses_schema import (
     ProcessamentoResponseSchema,
-    ProducaoResponseSchema,
 )
 from app.scrapper.scrapping import (
     extract_comercializacao_data,
