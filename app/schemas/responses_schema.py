@@ -37,7 +37,7 @@ class ImportacaoExportacaoSchema(BaseModel):
     valor_dolar: str = Field(..., description="Valor em US$")
 
 
-class ImportacaoReponseSchema(BaseModel):
+class ImportacaoResponseSchema(BaseModel):
     data: list[ImportacaoExportacaoSchema] = Field(
         ..., description="Lista de dados de importação"
     )

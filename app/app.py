@@ -14,7 +14,7 @@ from app.schemas.invocation_parameters_schema import (
 from app.schemas.responses_schema import (
     ComercializacaoResponseSchema,
     ExportacaoResponseSchema,
-    ImportacaoExportacaoSchema,
+    ImportacaoResponseSchema,
     ProcessamentoResponseSchema,
     ProducaoResponseSchema,
 )
@@ -172,7 +172,7 @@ async def get_comercializacao(params: ComercializacaoPathParams = Path(...)):
 @app.get(
     "/importacao/{sub_aba}/{ano}",
     status_code=HTTPStatus.OK,
-    response_model=ImportacaoExportacaoSchema,
+    response_model=ImportacaoReponseSchema,
     description=(
         "Obtém dados de importação da vitivinicultura para a subopção e ano "
         "informados. Retorna informações sobre importação de uvas, vinhos e "
