@@ -29,3 +29,21 @@ class ComercializacaoResponseSchema(BaseModel):
     data: list[ProdutoSchema] = Field(
         ..., description="Lista de dados de processamento"
     )
+
+
+class ImportacaoExportacaoSchema(BaseModel):
+    pais: str = Field(..., description="País")
+    quantidade_kg: str = Field(..., description="Quantidade em kg")
+    valor_dolar: str = Field(..., description="Valor em US$")
+
+
+class ImportacaoExportacaoSchema(BaseModel):
+    data: list[ProcessamentoSchema] = Field(
+        ..., description="Lista de dados de importação"
+    )
+
+
+class ImportacaoExportacaoSchema(BaseModel):
+    data: list[ProcessamentoSchema] = Field(
+        ..., description="Lista de dados de exportacao"
+    )
