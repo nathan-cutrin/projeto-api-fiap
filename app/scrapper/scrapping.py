@@ -34,10 +34,15 @@ def extract_producao_data(response):
             return {
                 "tipo_produto": tipo_produto["value"].title(),
                 "produto": text_0.lower(),
-                "quantidade_litros": int(text_1.replace(".", "").replace(",", ".").replace("-", "0"))
+                "quantidade_litros": int(
+                    text_1.replace(".", "").replace(",", ".").replace("-", "0")
+                ),
             }
         return None
-    return _parse_table(response, "tb_base tb_dados", 2, row_parser, skip_header=True)
+
+    return _parse_table(
+        response, "tb_base tb_dados", 2, row_parser, skip_header=True
+    )
 
 
 def extract_processamento_data(response):
@@ -54,9 +59,12 @@ def extract_processamento_data(response):
             return {
                 "tipo_uva": current_group["value"],
                 "cultivo": cultivar,
-                "quantidade_kg": int(quantidade.replace(".", "").replace("-", "0"))
+                "quantidade_kg": int(
+                    quantidade.replace(".", "").replace("-", "0")
+                ),
             }
         return None
+
     return _parse_table(response, "tb_base tb_dados", 2, row_parser)
 
 
@@ -74,20 +82,26 @@ def extract_comercializacao_data(response):
             return {
                 "tipo_produto": tipo_produto["value"],
                 "produto": text_0.lower(),
-                "quantidade_litros": int(text_1.replace(".", "").replace("-", "0"))
+                "quantidade_litros": int(
+                    text_1.replace(".", "").replace("-", "0")
+                ),
             }
         return None
+
     return _parse_table(response, "tb_base tb_dados", 2, row_parser)
 
 
 def extract_import_export_data(response):
     def row_parser(cols):
         pais = cols[0].get_text(strip=True)
-        quantidade = cols[1].get_text(strip=True).replace(".", "").replace("-", "0")
+        quantidade = (
+            cols[1].get_text(strip=True).replace(".", "").replace("-", "0")
+        )
         valor = cols[2].get_text(strip=True).replace(".", "").replace("-", "0")
         return {
             "pais": pais,
             "quantidade_kg": int(quantidade) if quantidade.isdigit() else 0,
             "valor_dolar": int(valor) if valor.isdigit() else 0,
         }
+
     return _parse_table(response, "tb_base tb_dados", 3, row_parser)
