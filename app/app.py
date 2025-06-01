@@ -78,7 +78,7 @@ def read_root():
 
 
 @app.get(
-    "/producao/",
+    "/producao/{ano}",
     status_code=HTTPStatus.OK,
     response_model=ProducaoResponseSchema,
     description=(
@@ -102,7 +102,7 @@ async def get_producao(params: ProducaoPathParams = Path(...)):
     result = fetch_and_extract(
         option="producao",
         suboption=None,
-        year=None,
+        year=params.ano,
         extract_func=extract_producao_data,
     )
     return result
@@ -139,7 +139,7 @@ async def get_processamento(params: ProcessamentoPathParams = Path(...)):
 
 
 @app.get(
-    "/comercializacao",
+    "/comercializacao/{ano}",
     status_code=HTTPStatus.OK,
     response_model=ComercializacaoResponseSchema,
     description=(
