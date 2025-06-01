@@ -10,7 +10,7 @@ def extract_producao_data(response):
     rows = table.find_all("tr")
     result = []
     n_cols = 2
-    for row in rows[1:]:  
+    for row in rows[1:]:
         cols = row.find_all("td")
         if len(cols) == n_cols:
             product = cols[0].get_text(strip=True)
@@ -42,7 +42,7 @@ def extract_processamento_data(response):
             continue
         if "tb_subitem" in cols[0].get("class", []):
             result.append({
-                "Grupo": current_group,
+                "Tipo": current_group,
                 "Cultivar": cultivar,
                 "Quantidade (kg)": quantidade,
             })
