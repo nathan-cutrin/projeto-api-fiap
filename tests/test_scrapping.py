@@ -79,7 +79,7 @@ def test_extract_producao_data(producao_html):
     assert result == [
         {
             "tipo_produto": "Vinho De Mesa",
-            "produto": "branco",
+            "produto": "Branco",
             "quantidade_litros": 400,
         },
     ]
@@ -90,12 +90,12 @@ def test_extract_processamento_data(processamento_html):
     result = scrapping.extract_processamento_data(response)
     assert result == [
         {
-            "tipo_uva": "TINTAS",
+            "tipo_uva": "Tintas",
             "cultivo": "Alicante Bouschet",
             "quantidade_kg": 4108858,
         },
         {
-            "tipo_uva": "TINTAS",
+            "tipo_uva": "Tintas",
             "cultivo": "Ancelota",
             "quantidade_kg": 783688,
         },

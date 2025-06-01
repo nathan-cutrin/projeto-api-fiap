@@ -33,7 +33,7 @@ def extract_producao_data(response):
         elif "tb_subitem" in td_classes and tipo_produto["value"]:
             return {
                 "tipo_produto": tipo_produto["value"].title(),
-                "produto": text_0.lower(),
+                "produto": text_0,
                 "quantidade_litros": int(
                     text_1.replace(".", "").replace(",", ".").replace("-", "0")
                 ),
@@ -57,7 +57,7 @@ def extract_processamento_data(response):
             return None
         if "tb_subitem" in td_classes and current_group["value"]:
             return {
-                "tipo_uva": current_group["value"],
+                "tipo_uva": current_group["value"].title(),
                 "cultivo": cultivar,
                 "quantidade_kg": int(
                     quantidade.replace(".", "").replace("-", "0")
