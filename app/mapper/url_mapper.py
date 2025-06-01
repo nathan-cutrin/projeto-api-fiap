@@ -57,6 +57,3 @@ class URLMapper:
             params["ano"] = year
 
         return f"{cls.BASE_URL}?{urlencode(params)}"
-
-
-print(URLMapper.build_url("producao", year=2023))
