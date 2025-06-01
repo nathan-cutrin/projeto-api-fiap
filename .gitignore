@@ -12,3 +12,15 @@ htmlcov/
 .coverage
 uv-commands.txt
 .vercel
+
+comercializacao.html
+importacao.html
+exportacao.html 
+importacao_vinhos_de_mesa.html
+importacao_espumantes.html
+a.py 
+a.html
+app/fallback_handler/
+downloaded_processamento.html 
+poetry.lock
+venv/
