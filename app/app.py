@@ -58,7 +58,7 @@ def fetch_and_extract(option, suboption, year, extract_func):
         request_response.raise_for_status()
         extracted_data = extract_func(request_response)
         return {"data": extracted_data}
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
