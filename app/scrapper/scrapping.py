@@ -42,9 +42,9 @@ def extract_processamento_data(response):
             continue
         if "tb_subitem" in cols[0].get("class", []):
             result.append({
-                "Tipo": current_group,
-                "Cultivar": cultivar,
-                "Quantidade (kg)": quantidade,
+                "tipo_uva": current_group,
+                "cultivo": cultivar,
+                "quantidade_kg": quantidade,
             })
     return result
 
