@@ -69,7 +69,7 @@ class ExportacaoPathParams(BaseModel):
 
 
 class ProcessamentoSchema(BaseModel):
-    tipo: str = Field(..., description="Tipo da uva")
+    tipo_uva: str = Field(..., description="Tipo da uva")
     cultivo: str = Field(..., description="Uva cultivada")
     quantidade_kg: str = Field(..., description="Quantidade em kg")
 
