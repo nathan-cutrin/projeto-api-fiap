@@ -4,13 +4,17 @@ import requests
 from fastapi import FastAPI, HTTPException, Path
 
 from app.mapper.url_mapper import URLMapper
-from app.schemas.embrapa_schema import (
+from app.schemas.invocation_parameters_schema import (
     ComercializacaoPathParams,
     ExportacaoPathParams,
     ImportacaoPathParams,
     ProcessamentoPathParams,
-    ProcessamentoResponseSchema,
     ProducaoPathParams,
+)
+
+from app.schemas.responses_schema import (
+    ProcessamentoResponseSchema,
+    ProducaoResponseSchema,
 )
 from app.scrapper.scrapping import (
     extract_comercializacao_data,
