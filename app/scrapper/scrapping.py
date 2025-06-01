@@ -72,33 +72,29 @@ def extract_comercializacao_data(response):
     soup = BeautifulSoup(response.text, "html.parser")
     table = soup.find("table", class_="tb_base tb_dados")
     if not table or not table.tbody:
-        return []
+        return {"data": []}
 
     result = []
-    current_product = None
+    tipo_produto = None
     n_cols = 2
     for row in table.tbody.find_all("tr"):
         cols = row.find_all("td")
-        if not cols or len(cols) < n_cols:
+        if len(cols) != n_cols:
             continue
 
-        product = cols[0].get_text(strip=True)
-        quantity = cols[1].get_text(strip=True)
+        td_classes = cols[0].get("class", [])
+        text_0 = cols[0].get_text(strip=True)
+        text_1 = cols[1].get_text(strip=True)
 
-        if "tb_item" in cols[0].get("class", []):
-            current_product = {
-                "Produto": product,
-                "Quantidade": quantity,
-                "Subitens": [],
-            }
-            result.append(current_product)
-        elif "tb_subitem" in cols[0].get("class", []) and current_product:
-            current_product["Subitens"].append({
-                "Produto": product,
-                "Quantidade": quantity,
+        if "tb_item" in td_classes:
+            tipo_produto = text_0.title()
+        elif "tb_subitem" in td_classes and tipo_produto:
+            result.append({
+                "tipo_produto": tipo_produto,
+                "produto": text_0.lower(),
+                "quantidade_litros": int(text_1.replace(".", "").replace("-", "0"))
             })
     return result
-
 
 def extract_importacao_data(response):
     soup = BeautifulSoup(response.text, "html.parser")
