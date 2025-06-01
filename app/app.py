@@ -1,15 +1,16 @@
 from http import HTTPStatus
 
 import requests
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Path
 
 from app.mapper.url_mapper import URLMapper
 from app.schemas.embrapa_schema import (
-    SubAbaExportacaoSchema,
-    SubAbaImportacaoSchema,
-    SubAbaProcessamentoSchema,
-    ano_query,
-    ano_query_imp_exp,
+    ComercializacaoPathParams,
+    ExportacaoPathParams,
+    ImportacaoPathParams,
+    ProcessamentoPathParams,
+    ProducaoPathParams,
+    ProducaoResponseSchema,
 )
 from app.scrapper.scrapping import (
     extract_comercializacao_data,
@@ -29,6 +30,21 @@ Embrapa_URL_Builder = URLMapper()
 
 
 def fetch_and_extract(option, suboption, year, extract_func):
+    """
+    Realiza a requisição à URL construída e extrai os dados
+    utilizando a função de extração fornecida.
+
+    Args:
+        option (str): Opção principal da consulta
+            (ex: 'producao', 'processamento').
+        suboption (str): Subopção ou categoria específica.
+        year (int): Ano de referência.
+        extract_func (callable): Função responsável por extrair
+            os dados da resposta.
+
+    Returns:
+        dict: Dados extraídos da resposta.
+    """
     try:
         request_url = Embrapa_URL_Builder.build_url(
             option=option, suboption=suboption, year=year
@@ -41,62 +57,160 @@ def fetch_and_extract(option, suboption, year, extract_func):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/", status_code=HTTPStatus.OK)
+@app.get(
+    "/",
+    status_code=HTTPStatus.OK,
+    description="Endpoint raiz da API. Retorna uma mensagem de boas-vindas.",
+)
 def read_root():
+    """
+    Endpoint raiz da API.
+
+    Returns:
+        dict: Mensagem de boas-vindas para a API de Vitivinicultura da Embrapa.
+    """
     return {"message": "Bem-vindo à API de Vitivinicultura da Embrapa"}
 
 
-@app.get("/producao/", status_code=HTTPStatus.OK)
-async def get_producao(ano: int = ano_query):
-    return fetch_and_extract(
+@app.get(
+    "/producao/",
+    status_code=HTTPStatus.OK,
+    response_model=ProducaoResponseSchema,
+    description=(
+        "Obtém dados de produção da vitivinicultura, permitindo filtragem "
+        "por subopção e ano."
+        "Retorna informações detalhadas sobre a produção vitivinícola, "
+        "como volume produzido, tipo de produto e outras métricas relevantes."
+    ),
+)
+async def get_producao(params: ProducaoPathParams = Path(...)):
+    """
+    Obtém dados de produção da vitivinicultura.
+
+    Args:
+        params (ProducaoPathParams): Parâmetros contendo 'sub_aba'
+            (subopção) e 'ano' (ano de referência).
+
+    Returns:
+        dict: Dados extraídos de produção conforme os parâmetros fornecidos.
+    """
+    result = fetch_and_extract(
         option="producao",
         suboption=None,
-        year=ano,
+        year=None,
         extract_func=extract_producao_data,
     )
+    return result
 
 
-@app.get("/processamento/", status_code=HTTPStatus.OK)
-async def get_processamento(
-    sub_aba: SubAbaProcessamentoSchema, ano: int = ano_query
-):
+@app.get(
+    "/processamento/{sub_aba}/{ano}",
+    status_code=HTTPStatus.OK,
+    description=(
+        "Obtém dados de processamento da vitivinicultura para a subopção e "
+        "ano informados. Retorna informações sobre o processamento de uvas e "
+        "derivados."
+    ),
+)
+async def get_processamento(params: ProcessamentoPathParams = Path(...)):
+    """
+    Obtém dados de processamento da vitivinicultura.
+
+    Args:
+        params (ProcessamentoPathParams): Parâmetros contendo 'sub_aba'
+            (subopção) e 'ano' (ano de referência).
+
+    Returns:
+        dict: Dados extraídos de processamento conforme os parâmetros
+            fornecidos.
+    """
     return fetch_and_extract(
         option="processamento",
-        suboption=sub_aba,
-        year=ano,
+        suboption=params.sub_aba,
+        year=params.ano,
         extract_func=extract_processamento_data,
     )
 
 
-@app.get("/comercializacao")
-def get_comercializacao(ano: int = ano_query):
+@app.get(
+    "/comercializacao",
+    description=(
+        "Obtém dados de comercialização da vitivinicultura, permitindo "
+        "filtragem por subopção e ano. Retorna informações sobre vendas, "
+        "distribuição e comercialização de produtos vitivinícolas."
+    ),
+)
+async def get_comercializacao(params: ComercializacaoPathParams = Path(...)):
+    """
+    Obtém dados de comercialização da vitivinicultura.
+
+    Args:
+        params (ComercializacaoPathParams): Parâmetros contendo 'sub_aba'
+            (subopção) e 'ano' (ano de referência).
+
+    Returns:
+        dict: Dados extraídos de comercialização conforme os parâmetros
+            fornecidos.
+    """
     return fetch_and_extract(
         option="comercializacao",
-        suboption=None,
-        year=ano,
+        suboption=params.sub_aba,
+        year=params.ano,
         extract_func=extract_comercializacao_data,
     )
 
 
-@app.get("/importacao")
-async def get_importacao(
-    sub_aba: SubAbaImportacaoSchema, ano: int = ano_query_imp_exp
-):
+@app.get(
+    "/importacao/{sub_aba}/{ano}",
+    description=(
+        "Obtém dados de importação da vitivinicultura para a subopção e ano "
+        "informados. Retorna informações sobre importação de uvas, vinhos e "
+        "derivados."
+    ),
+)
+async def get_importacao_(params: ImportacaoPathParams = Path(...)):
+    """
+    Obtém dados de importação da vitivinicultura.
+
+    Args:
+        params (ImportacaoPathParams): Parâmetros contendo 'sub_aba'
+            (subopção) e 'ano' (ano de referência).
+
+    Returns:
+        dict: Dados extraídos de importação conforme os parâmetros
+            fornecidos.
+    """
     return fetch_and_extract(
         option="importacao",
-        suboption=sub_aba,
-        year=ano,
+        suboption=params.sub_aba,
+        year=params.ano,
         extract_func=extract_importacao_data,
     )
 
 
-@app.get("/exportacao")
-async def get_exportacao(
-    sub_aba: SubAbaExportacaoSchema, ano: int = ano_query_imp_exp
-):
+@app.get(
+    "/exportacao/{sub_aba}/{ano}",
+    description=(
+        "Obtém dados de exportação da vitivinicultura para a subopção e ano "
+        "informados. Retorna informações sobre exportação de uvas, vinhos e "
+        "derivados."
+    ),
+)
+async def get_exportacao(params: ExportacaoPathParams = Path(...)):
+    """
+    Obtém dados de exportação da vitivinicultura.
+
+    Args:
+        params (ExportacaoPathParams): Parâmetros contendo 'sub_aba'
+            (subopção) e 'ano' (ano de referência).
+
+    Returns:
+        dict: Dados extraídos de exportação conforme os parâmetros
+            fornecidos.
+    """
     return fetch_and_extract(
         option="exportacao",
-        suboption=sub_aba,
-        year=ano,
+        suboption=params.sub_aba,
+        year=params.ano,
         extract_func=extract_exportacao_data,
     )
