@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/nathan-cutrin/projeto-api-fiap/branch/main/graph/badge.svg)](https://codecov.io/gh/nathan-cutrin/projeto-api-fiap)
+
 # API Pública de Vitivinicultura - Embrapa
 
 Esta API tem como objetivo disponibilizar, em tempo real, os dados de vitivinicultura fornecidos pela Embrapa, incluindo informações sobre Produção, Processamento, Comercialização, Importação e Exportação.
@@ -15,5 +17,7 @@ Esta API tem como objetivo disponibilizar, em tempo real, os dados de vitivinicu
 - O endpoint deve sempre tentar acessar o site primeiro para validação da raspagem.
 
 ---
+
+
 
 Mais informações e instruções de uso serão adicionadas posteriormente.

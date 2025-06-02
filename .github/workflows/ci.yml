@@ -18,24 +18,19 @@ jobs:
         run: |
           pip install uv
 
-
-      - name: Criar ambiente virtual com uv
+      - name: Criar ambiente virtual com uv e instalar dependências
         run: |
           uv venv .venv
           source .venv/bin/activate
-
-      - name: Instalar dependências com uv
-        run: |
           uv pip install .[dev]
+          uv pip install pytest pytest-cov
 
-      - name: Adicionar scripts do Python ao PATH
+      - name: Rodar testes com coverage
         run: |
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          source .venv/bin/activate
+          pytest --cov=app --cov-report=term-missing
 
-      - name: Instalar taskipy
-        run: |
-          uv pip install taskipy --system
-
-      - name: Rodar testes com taskipy
-        run: |
-          task test
+      - name: Upload coverage para Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
