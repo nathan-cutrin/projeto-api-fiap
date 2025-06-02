@@ -18,7 +18,6 @@ jobs:
         run: |
           pip install uv
 
-
       - name: Criar ambiente virtual com uv
         run: |
           uv venv .venv
@@ -28,14 +27,10 @@ jobs:
         run: |
           uv pip install .[dev]
 
-      - name: Adicionar scripts do Python ao PATH
+      - name: Instalar pytest e pytest-cov
         run: |
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          uv pip install pytest pytest-cov --system
 
-      - name: Instalar taskipy
+      - name: Rodar testes com coverage
         run: |
-          uv pip install taskipy --system
-
-      - name: Rodar testes com taskipy
-        run: |
-          task test
+          pytest --cov=app --cov-report=term-missing
