@@ -81,10 +81,9 @@ def read_root():
     status_code=HTTPStatus.OK,
     response_model=ProducaoResponseSchema,
     description=(
-        "Obtém dados de produção da vitivinicultura, permitindo filtragem "
-        "por subopção e ano."
-        "Retorna informações detalhadas sobre a produção vitivinícola, "
-        "como volume produzido, tipo de produto e outras métricas relevantes."
+        "Obtém dados de produção da vitivinicultura. "
+        "Retorna informações sobre a produção vitivinícola, "
+        "como tipos de produto (vinho, suco, etc), produto e ano de produção."
     ),
 )
 async def get_producao(
@@ -95,8 +94,7 @@ async def get_producao(
     Obtém dados de produção da vitivinicultura.
 
     Args:
-        params (ProducaoPathParams): Parâmetros contendo 'sub_aba'
-            (subopção) e 'ano' (ano de referência).
+        params (ProducaoPathParams): Parâmetros contém 'ano' (ano de produção).
 
     Returns:
         dict: Dados extraídos de produção conforme os parâmetros fornecidos.
@@ -123,9 +121,9 @@ async def get_producao(
     status_code=HTTPStatus.OK,
     response_model=ProcessamentoResponseSchema,
     description=(
-        "Obtém dados de processamento da vitivinicultura para a subopção e "
-        "ano informados. Retorna informações sobre o processamento de uvas e "
-        "derivados."
+        "Obtém dados de processamento da vitivinicultura "
+        "Retorna informações sobre o processamento de vinhos, "
+        "uvas e derivados."
     ),
 )
 async def get_processamento(
@@ -165,9 +163,9 @@ async def get_processamento(
     status_code=HTTPStatus.OK,
     response_model=ComercializacaoResponseSchema,
     description=(
-        "Obtém dados de comercialização da vitivinicultura, permitindo "
-        "filtragem por subopção e ano. Retorna informações sobre vendas, "
-        "distribuição e comercialização de produtos vitivinícolas."
+        "Obtém dados de comercialização da vitivinicultura. "
+        "Retorna informações sobre comercialização de uvas, "
+        "vinho e derivados."
     ),
 )
 async def get_comercializacao(
@@ -178,8 +176,8 @@ async def get_comercializacao(
     Obtém dados de comercialização da vitivinicultura.
 
     Args:
-        params (ComercializacaoPathParams): Parâmetros contendo 'sub_aba'
-            (subopção) e 'ano' (ano de referência).
+        params (ComercializacaoPathParams): Parâmetros contém
+        'ano' (ano de referência).
 
     Returns:
         dict: Dados extraídos de comercialização conforme os parâmetros
@@ -205,9 +203,8 @@ async def get_comercializacao(
     status_code=HTTPStatus.OK,
     response_model=ImportacaoResponseSchema,
     description=(
-        "Obtém dados de importação da vitivinicultura para a subopção e ano "
-        "informados. Retorna informações sobre importação de uvas, vinhos e "
-        "derivados."
+        "Obtém dados de importação da vitivinicultura."
+        "Retorna informações sobre importacao de  derivados de uva."
     ),
 )
 async def get_importacao_(
@@ -247,9 +244,8 @@ async def get_importacao_(
     status_code=HTTPStatus.OK,
     response_model=ExportacaoResponseSchema,
     description=(
-        "Obtém dados de exportação da vitivinicultura para a subopção e ano "
-        "informados. Retorna informações sobre exportação de uvas, vinhos e "
-        "derivados."
+        "Obtém dados de exportação da vitivinicultura."
+        "Retorna informações sobre exportação de  derivados de uva."
     ),
 )
 async def get_exportacao(
