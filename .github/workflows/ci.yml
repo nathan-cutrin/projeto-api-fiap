@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   test:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Instalar taskipy
         run: |
-          uv pip install taskipy --sistem
+          uv pip install taskipy --system
 
       - name: Rodar testes com taskipy
         run: |
