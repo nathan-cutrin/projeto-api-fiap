@@ -18,7 +18,7 @@ jobs:
         run: |
           pip install uv
 
-          
+
       - name: Criar ambiente virtual com uv
         run: |
           uv venv .venv
@@ -28,9 +28,13 @@ jobs:
         run: |
           uv pip install .[dev]
 
+      - name: Adicionar scripts do Python ao PATH
+        run: |
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
       - name: Instalar taskipy
         run: |
-          uv pip install taskipy
+          uv pip install taskipy --sistem
 
       - name: Rodar testes com taskipy
         run: |
