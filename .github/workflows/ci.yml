@@ -18,6 +18,12 @@ jobs:
         run: |
           pip install uv
 
+          
+      - name: Criar ambiente virtual com uv
+        run: |
+          uv venv .venv
+          source .venv/bin/activate
+
       - name: Instalar dependências com uv
         run: |
           uv pip install .[dev]
