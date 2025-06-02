@@ -18,19 +18,14 @@ jobs:
         run: |
           pip install uv
 
-      - name: Criar ambiente virtual com uv
+      - name: Criar ambiente virtual com uv e instalar dependências
         run: |
           uv venv .venv
           source .venv/bin/activate
-
-      - name: Instalar dependências com uv
-        run: |
           uv pip install .[dev]
-
-      - name: Instalar pytest e pytest-cov
-        run: |
-          uv pip install pytest pytest-cov --system
+          uv pip install pytest pytest-cov
 
       - name: Rodar testes com coverage
         run: |
+          source .venv/bin/activate
           pytest --cov=app --cov-report=term-missing
