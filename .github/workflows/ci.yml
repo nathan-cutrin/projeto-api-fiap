@@ -28,7 +28,7 @@ jobs:
       - name: Rodar testes com coverage
         run: |
           source .venv/bin/activate
-          pytest --cov=app --cov-report=term-missing
+          pytest --cov=app --cov-report=term-missing --cov-report=xml
 
       - name: Upload coverage para Codecov
         uses: codecov/codecov-action@v5
