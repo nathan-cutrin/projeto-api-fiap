@@ -1,8 +1,10 @@
+import logging
 from http import HTTPStatus
 
 import requests
-from fastapi import APIRouter, HTTPException, Path
+from fastapi import APIRouter, HTTPException, Path, Response
 
+from app.fallback.fallback_handler import get_fallback_data
 from app.mapper.url_mapper import URLMapper
 from app.schemas.invocation_parameters_schema import (
     ComercializacaoPathParams,
@@ -24,6 +26,8 @@ from app.scrapper.scrapping import (
     extract_processamento_data,
     extract_producao_data,
 )
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 Embrapa_URL_Builder = URLMapper()
@@ -83,7 +87,10 @@ def read_root():
         "como volume produzido, tipo de produto e outras métricas relevantes."
     ),
 )
-async def get_producao(params: ProducaoPathParams = Path(...)):
+async def get_producao(
+    params: ProducaoPathParams = Path(...),
+    response: Response = None,
+):
     """
     Obtém dados de produção da vitivinicultura.
 
@@ -94,13 +101,21 @@ async def get_producao(params: ProducaoPathParams = Path(...)):
     Returns:
         dict: Dados extraídos de produção conforme os parâmetros fornecidos.
     """
-    result = fetch_and_extract(
-        option="producao",
-        suboption=None,
-        year=params.ano,
-        extract_func=extract_producao_data,
-    )
-    return result
+    aba = "producao"
+    try:
+        result = fetch_and_extract(
+            option=aba,
+            suboption=None,
+            year=params.ano,
+            extract_func=extract_producao_data,
+        )
+        return result
+
+    except Exception as e:
+        logger.warning(f"Usando fallback para {aba} {params.ano}: {e}")
+        if response:
+            response.headers["X-Fallback"] = "true"
+        return get_fallback_data(aba, params)
 
 
 @router.get(
@@ -113,7 +128,10 @@ async def get_producao(params: ProducaoPathParams = Path(...)):
         "derivados."
     ),
 )
-async def get_processamento(params: ProcessamentoPathParams = Path(...)):
+async def get_processamento(
+    params: ProcessamentoPathParams = Path(...),
+    response: Response = None,
+):
     """
     Obtém dados de processamento da vitivinicultura.
 
@@ -125,12 +143,21 @@ async def get_processamento(params: ProcessamentoPathParams = Path(...)):
         dict: Dados extraídos de processamento conforme os parâmetros
             fornecidos.
     """
-    return fetch_and_extract(
-        option="processamento",
-        suboption=params.sub_aba,
-        year=params.ano,
-        extract_func=extract_processamento_data,
-    )
+    aba = "processamento"
+    try:
+        return fetch_and_extract(
+            option=aba,
+            suboption=params.sub_aba,
+            year=params.ano,
+            extract_func=extract_processamento_data,
+        )
+    except Exception as e:
+        logger.warning(
+            f"Usando fallback para {aba} {params.sub_aba} {params.ano}: {e}"
+        )
+        if response:
+            response.headers["X-Fallback"] = "true"
+        return get_fallback_data(aba, params)
 
 
 @router.get(
@@ -143,7 +170,10 @@ async def get_processamento(params: ProcessamentoPathParams = Path(...)):
         "distribuição e comercialização de produtos vitivinícolas."
     ),
 )
-async def get_comercializacao(params: ComercializacaoPathParams = Path(...)):
+async def get_comercializacao(
+    params: ComercializacaoPathParams = Path(...),
+    response: Response = None,
+):
     """
     Obtém dados de comercialização da vitivinicultura.
 
@@ -155,12 +185,19 @@ async def get_comercializacao(params: ComercializacaoPathParams = Path(...)):
         dict: Dados extraídos de comercialização conforme os parâmetros
             fornecidos.
     """
-    return fetch_and_extract(
-        option="comercializacao",
-        suboption=None,
-        year=params.ano,
-        extract_func=extract_comercializacao_data,
-    )
+    aba = "comercializacao"
+    try:
+        return fetch_and_extract(
+            option=aba,
+            suboption=None,
+            year=params.ano,
+            extract_func=extract_comercializacao_data,
+        )
+    except Exception as e:
+        logger.warning(f"Usando fallback para {aba} {params.ano}: {e}")
+        if response:
+            response.headers["X-Fallback"] = "true"
+        return get_fallback_data(aba, params)
 
 
 @router.get(
@@ -173,7 +210,10 @@ async def get_comercializacao(params: ComercializacaoPathParams = Path(...)):
         "derivados."
     ),
 )
-async def get_importacao_(params: ImportacaoPathParams = Path(...)):
+async def get_importacao_(
+    params: ImportacaoPathParams = Path(...),
+    response: Response = None,
+):
     """
     Obtém dados de importação da vitivinicultura.
 
@@ -185,12 +225,21 @@ async def get_importacao_(params: ImportacaoPathParams = Path(...)):
         dict: Dados extraídos de importação conforme os parâmetros
             fornecidos.
     """
-    return fetch_and_extract(
-        option="importacao",
-        suboption=params.sub_aba,
-        year=params.ano,
-        extract_func=extract_import_export_data,
-    )
+    aba = "importacao"
+    try:
+        return fetch_and_extract(
+            option=aba,
+            suboption=params.sub_aba,
+            year=params.ano,
+            extract_func=extract_import_export_data,
+        )
+    except Exception as e:
+        logger.warning(
+            f"Usando fallback para {aba} {params.sub_aba} {params.ano}: {e}"
+        )
+        if response:
+            response.headers["X-Fallback"] = "true"
+        return get_fallback_data(aba, params)
 
 
 @router.get(
@@ -203,7 +252,10 @@ async def get_importacao_(params: ImportacaoPathParams = Path(...)):
         "derivados."
     ),
 )
-async def get_exportacao(params: ExportacaoPathParams = Path(...)):
+async def get_exportacao(
+    params: ExportacaoPathParams = Path(...),
+    response: Response = None,
+):
     """
     Obtém dados de exportação da vitivinicultura.
 
@@ -215,9 +267,18 @@ async def get_exportacao(params: ExportacaoPathParams = Path(...)):
         dict: Dados extraídos de exportação conforme os parâmetros
             fornecidos.
     """
-    return fetch_and_extract(
-        option="exportacao",
-        suboption=params.sub_aba,
-        year=params.ano,
-        extract_func=extract_import_export_data,
-    )
+    aba = "exportacao"
+    try:
+        return fetch_and_extract(
+            option=aba,
+            suboption=params.sub_aba,
+            year=params.ano,
+            extract_func=extract_import_export_data,
+        )
+    except Exception as e:
+        logger.warning(
+            f"Usando fallback para {aba} {params.sub_aba} {params.ano}: {e}"
+        )
+        if response:
+            response.headers["X-Fallback"] = "true"
+        return get_fallback_data(aba, params)

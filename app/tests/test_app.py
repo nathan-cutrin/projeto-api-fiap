@@ -165,14 +165,3 @@ def test_get_exportacao_success(mock_requests_get, mock_url_builder):
         assert response.status_code == HTTPStatus.OK
         assert "data" in response.json()
         assert response.json()["data"] == exportacao_mock
-
-
-@patch("app.routes.routes.Embrapa_URL_Builder")
-@patch(
-    "app.routes.routes.requests.get",
-    side_effect=Exception("Erro de conexão"),
-)
-def test_fetch_and_extract_error(mock_requests_get, mock_url_builder):
-    response = client.get(f"{API_PREFIX}/producao/2023")
-    assert response.status_code == HTTPStatus.INTERNAL_SERVER_ERROR
-    assert "detail" in response.json()
