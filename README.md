@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/nathan-cutrin/projeto-api-fiap/branch/main/graph/badge.svg)](https://codecov.io/gh/nathan-cutrin/projeto-api-fiap)
+
 # Projeto API FIAP - Vitivinicultura Embrapa
 
 API para consulta, extração e fallback de dados públicos da vitivinicultura brasileira, baseada nos dados da Embrapa Uva e Vinho.
