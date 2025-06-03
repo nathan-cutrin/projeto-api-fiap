@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field
 class ProdutoSchema(BaseModel):
     tipo_produto: str = Field(..., description="Tipo da uva")
     produto: str = Field(..., description="Uva cultivada")
-    quantidade_litros: int = Field(..., description="Quantidade em kg")
+    quantidade_litros: int = Field(..., description="Quantidade em litros")
 
 
 class ProducaoResponseSchema(BaseModel):
