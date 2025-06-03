@@ -45,7 +45,61 @@ def extract_producao_data(response):
     )
 
 
+def extract_processamento_sem_classificacao(response):
+    """
+    Extrai dados de processamento para tabelas de 'Sem classificação',
+    onde só existe uma linha tb_item com o valor.
+    """
+
+    def row_parser(cols):
+        cultivar = cols[0].get_text(strip=True)
+        quantidade = cols[1].get_text(strip=True)
+        td_classes = cols[0].get("class", [])
+        if "tb_item" in td_classes and cultivar.strip().lower() in {
+            "sem classificação",
+            "sem classificacao",
+        }:
+            try:
+                valor = int(
+                    quantidade.replace(".", "")
+                    .replace(" ", "")
+                    .replace("-", "0")
+                )
+            except Exception:
+                valor = 0
+            return {
+                "tipo_uva": cultivar.title(),
+                "cultivo": cultivar,
+                "quantidade_kg": valor,
+            }
+        return None
+
+    return [
+        row
+        for row in _parse_table(
+            response, "tb_base tb_dados", 2, row_parser, skip_header=False
+        )
+        if row
+    ]
+
+
 def extract_processamento_data(response):
+    """
+    Extrai dados de processamento para tabelas normais ou
+    de 'Sem classificação'.
+    Se detectar que é 'Sem classificação', delega para a função específica.
+    """
+    # Detecta se é "sem classificação" olhando a primeira linha de dados
+    soup = BeautifulSoup(response.text, "html.parser")
+    table = soup.find("table", class_="tb_base tb_dados")
+    if table:
+        first_td = table.find("td", class_="tb_item")
+        if first_td and first_td.get_text(strip=True).lower() in {
+            "sem classificação",
+            "sem classificacao",
+        }:
+            return extract_processamento_sem_classificacao(response)
+
     current_group = {"value": None}
 
     def row_parser(cols):
