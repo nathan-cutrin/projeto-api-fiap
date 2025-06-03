@@ -43,16 +43,16 @@ def test_comercializacao_path_params_invalid():
 
 def test_processamento_path_params_valid():
     params = ProcessamentoPathParams(
-        sub_aba=SubAbaProcessamentoSchema.SUCO, ano=ANO_MAX_2023
+        sub_aba=SubAbaProcessamentoSchema.UVAS_VINIFERAS, ano=ANO_MAX_2023
     )
-    assert params.sub_aba == SubAbaProcessamentoSchema.SUCO
+    assert params.sub_aba == SubAbaProcessamentoSchema.UVAS_VINIFERAS
     assert params.ano == ANO_MAX_2023
 
 
 def test_processamento_path_params_invalid_ano():
     with pytest.raises(ValidationError):
         ProcessamentoPathParams(
-            sub_aba=SubAbaProcessamentoSchema.SUCO, ano=ANO_MIN - 10
+            sub_aba=SubAbaProcessamentoSchema.UVAS_VINIFERAS, ano=ANO_MIN - 10
         )
 
 
