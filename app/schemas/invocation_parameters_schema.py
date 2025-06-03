@@ -26,7 +26,7 @@ class ComercializacaoPathParams(BaseModel):
 
 
 class SubAbaProcessamentoSchema(str, Enum):
-    SUCO = "viniferas"
+    UVAS_VINIFERAS = "viniferas"
     VINHO = "americanas_hibridas"
     UVA_MESA = "uvas_de_mesa"
     PASSAS = "sem_classificacao"
